@@ -1,0 +1,8 @@
+# 대용량 수집 원본 (깃허브 미포함 — 로컬에만 보관)
+captures/videos/
+captures/frames/
+
+# OS/에디터 부산물
+.DS_Store
+Thumbs.db
+*.tmp

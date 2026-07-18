@@ -1,0 +1,25 @@
+{
+  "_note": "병종 상성. 게임 내 '상성' 다이어그램(4병종 시계방향 순환) 기준. 배수는 미확보(TODO).",
+  "arms": [
+    { "id": "shield",  "name": "방패병", "icon": "shield", "class": "보병계" },
+    { "id": "archer",  "name": "궁병",   "icon": "bow",    "class": "원거리" },
+    { "id": "spear",   "name": "창병",   "icon": "spear",  "class": "보병계" },
+    { "id": "cavalry", "name": "기병",   "icon": "horse",  "class": "기동" }
+  ],
+  "cycle": ["shield", "archer", "spear", "cavalry"],
+  "cycleMeaning": "시계방향 A→B = A가 B를 제압. 4중 순환. 2칸 건너(정반대)는 상성 없음(중립).",
+  "counters": {
+    "shield":  { "beats": "archer",  "losesTo": "cavalry", "neutral": "spear"  },
+    "archer":  { "beats": "spear",   "losesTo": "shield",  "neutral": "cavalry"},
+    "spear":   { "beats": "cavalry", "losesTo": "archer",  "neutral": "shield" },
+    "cavalry": { "beats": "shield",  "losesTo": "spear",   "neutral": "archer" }
+  },
+  "multiplier": {
+    "advantage": null,
+    "disadvantage": null,
+    "neutral": 1.0,
+    "_todo": "제압/피제압 배수 미확보. 병종 상세 툴팁 또는 전투 보고서 역산으로 확정."
+  },
+  "correction": "웹 공략의 '보병>궁병>기병>보병'(3종)은 단순화 오류. 실제는 방패병/창병이 분리된 4종 순환.",
+  "_source": "capture:병종 상성 다이어그램"
+}

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>삼국지: 천하결전 — 덱빌더</title>
+<style>
+  :root{
+    --bg:#14110d; --panel:#1e1a14; --panel2:#262019; --line:#3a3125;
+    --gold:#d9b45b; --gold2:#f0d68a; --red:#b5453a; --text:#e9e2d2; --muted:#9c917c;
+    --wei:#5b7fb5; --chok:#5aa66a; --oh:#c06a45; --gun:#8a7bb0;
+    --geum:#d9b45b; --bora:#a074c8; --parang:#5b8fc0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:"Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;font-size:14px;line-height:1.5}
+  a{color:var(--gold2)}
+  header{padding:14px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#221c14,#14110d);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  header h1{margin:0;font-size:18px;color:var(--gold2);letter-spacing:.5px}
+  header h1 small{color:var(--muted);font-weight:normal;font-size:12px;margin-left:6px}
+  #status{margin-left:auto;font-size:12px;color:var(--muted)}
+  #status b{color:var(--gold)}
+  button{font-family:inherit}
+  .tabs{display:flex;gap:2px;padding:0 12px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .tab{padding:10px 16px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;border-bottom:2px solid transparent}
+  .tab.active{color:var(--gold2);border-bottom-color:var(--gold)}
+  .tab:hover{color:var(--text)}
+  main{padding:16px;max-width:1200px;margin:0 auto}
+  .view{display:none} .view.active{display:block}
+  .row{display:flex;gap:12px;flex-wrap:wrap}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  select,input[type=text]{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:7px 9px;font-size:13px;font-family:inherit}
+  label.f{display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--muted)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+  .card{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px;position:relative}
+  .card h3{margin:0 0 6px;font-size:15px;display:flex;align-items:center;gap:6px}
+  .fac{font-size:11px;padding:1px 6px;border-radius:4px;color:#fff}
+  .fac.위{background:var(--wei)} .fac.촉{background:var(--chok)} .fac.오{background:var(--oh)} .fac.군{background:var(--gun)}
+  .badge{font-size:10px;padding:1px 5px;border-radius:4px;border:1px solid var(--line);color:var(--muted)}
+  .badge.geum{color:#14110d;background:var(--geum);border-color:var(--geum)}
+  .badge.bora{color:#fff;background:var(--bora);border-color:var(--bora)}
+  .badge.parang{color:#fff;background:var(--parang);border-color:var(--parang)}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;font-size:12px;margin:6px 0}
+  .stats span b{color:var(--gold2)} .growth{color:var(--muted);font-size:11px}
+  .tac{font-size:12px;color:var(--muted);margin-top:4px}
+  .tac .t{color:var(--text)}
+  .muted{color:var(--muted)} .small{font-size:12px}
+  .pill{display:inline-block;font-size:11px;padding:1px 7px;border:1px solid var(--line);border-radius:10px;margin:2px 2px 0 0;color:var(--muted)}
+  .notobt{opacity:.5}
+  /* deck */
+  .slots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:720px){.slots{grid-template-columns:1fr}}
+  .slot{background:var(--panel2);border:1px dashed var(--line);border-radius:8px;padding:10px;min-height:120px}
+  .slot h4{margin:0 0 8px;color:var(--gold);font-size:13px}
+  .syn{margin-top:14px}
+  .syn .line{padding:6px 0;border-bottom:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;align-items:baseline}
+  .syn .k{color:var(--muted);min-width:90px;font-size:12px}
+  .pos{font-size:11px;color:var(--gold2)}
+  .warn{color:var(--red)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+  th{color:var(--gold);background:var(--panel2);font-weight:normal}
+  .kv{margin:2px 0}
+  .cycle{font-size:16px;color:var(--gold2);letter-spacing:1px;text-align:center;padding:8px}
+  .err{background:#3a1c18;border:1px solid var(--red);color:#f3c9c2;padding:10px 12px;border-radius:8px;margin-bottom:12px}
+  .foot{color:var(--muted);font-size:11px;text-align:center;padding:20px}
+</style>
+</head>
+<body>
+<header>
+  <h1>삼국지: 천하결전 <small>덱빌더 · data-driven</small></h1>
+  <div id="status">데이터 로딩 중…</div>
+</header>
+<nav class="tabs" id="tabs"></nav>
+<main>
+  <div id="err"></div>
+  <section class="view" id="view-deck"></section>
+  <section class="view" id="view-heroes"></section>
+  <section class="view" id="view-tactics"></section>
+  <section class="view" id="view-ref"></section>
+</main>
+<div class="foot" id="foot"></div>
+
+<script>
+const DATA = {};
+const FILES = ["arms","heroes","tactics","combat","glossary"];
+const $ = (s,r=document)=>r.querySelector(s);
+const el = (t,c,html)=>{const e=document.createElement(t);if(c)e.className=c;if(html!=null)e.innerHTML=html;return e;};
+const esc = s => (s==null?"":String(s)).replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
+
+async function loadData(){
+  const results = await Promise.all(FILES.map(async f=>{
+    try{ const r = await fetch(`./data/${f}.json?_=${Date.now()}`); if(!r.ok) throw new Error(r.status); DATA[f]=await r.json(); return [f,true]; }
+    catch(e){ DATA[f]=null; return [f,false,e.message]; }
+  }));
+  const ok = results.filter(r=>r[1]).map(r=>r[0]);
+  const bad = results.filter(r=>!r[1]);
+  const nH = DATA.heroes?.heroes?.length||0, nT = DATA.tactics?.tactics?.length||0, nA = DATA.arms?.arms?.length||0;
+  $("#status").innerHTML = `무장 <b>${nH}</b> · 전법 <b>${nT}</b> · 병종 <b>${nA}</b> <button onclick="location.reload()" style="margin-left:8px;background:var(--panel2);color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:3px 8px;cursor:pointer">새로고침</button>`;
+  if(bad.length){
+    const isFile = location.protocol==="file:";
+    $("#err").innerHTML = `<div class="err">일부 데이터를 못 읽었습니다: ${bad.map(b=>b[0]).join(", ")}.
+      ${isFile?"<br><b>file:// 로 직접 열면 브라우저가 JSON 로드를 막습니다.</b> GitHub Pages에 올리거나, 폴더에서 <code>python -m http.server</code> 실행 후 <code>localhost:8000</code>으로 여세요.":""}</div>`;
+  }
+}
+
+/* ---------- helpers ---------- */
+const facClass = f => ["위","촉","오","군"].includes(f)?f:"";
+const gradeClass = g => g==="금"?"geum":g==="보라"?"bora":g==="파랑"?"parang":"";
+function armsName(v){ // hero.arms(en id) or name -> korean name
+  if(!v) return null;
+  const a=(DATA.arms?.arms||[]).find(x=>x.id===v||x.name===v);
+  return a?a.name:v;
+}
+function heroById(id){ return (DATA.heroes?.heroes||[]).find(h=>h.id===id); }
+function statVal(h,k){ return h?.stats?.[k]?.value ?? null; }
+
+/* ---------- HEROES ---------- */
+function renderHeroes(){
+  const v=$("#view-heroes"); v.innerHTML="";
+  const heroes=DATA.heroes?.heroes||[];
+  const factions=[...new Set(heroes.map(h=>h.faction).filter(Boolean))];
+  const armsList=(DATA.arms?.arms||[]).map(a=>a.name);
+  const roles=[...new Set(heroes.flatMap(h=>h.roleTags||[]))];
+  const bar=el("div","filters");
+  bar.innerHTML=`
+    <label class="f">진영<select id="hf"><option value="">전체</option>${factions.map(f=>`<option>${f}</option>`).join("")}</select></label>
+    <label class="f">병종<select id="ha"><option value="">전체</option>${armsList.map(a=>`<option>${a}</option>`).join("")}</select></label>
+    <label class="f">역할<select id="hr"><option value="">전체</option>${roles.map(r=>`<option>${r}</option>`).join("")}</select></label>
+    <label class="f">보유<select id="ho"><option value="">전체</option><option value="1">보유</option><option value="0">미획득</option></select></label>
+    <label class="f">검색<input type="text" id="hq" placeholder="이름..."></label>
+    <label class="f">정렬<select id="hs"><option value="">기본</option><option value="무력">무력</option><option value="지력">지력</option><option value="통솔">통솔</option><option value="선공">선공</option></select></label>`;
+  v.appendChild(bar);
+  const grid=el("div","grid"); grid.id="hgrid"; v.appendChild(grid);
+  const draw=()=>{
+    const f=$("#hf").value,a=$("#ha").value,r=$("#hr").value,o=$("#ho").value,q=$("#hq").value.trim(),s=$("#hs").value;
+    let list=heroes.filter(h=>
+      (!f||h.faction===f)&&(!a||armsName(h.arms)===a)&&(!r||(h.roleTags||[]).includes(r))&&
+      (o===""||String(h.obtained?1:0)===o)&&(!q||h.name.includes(q)));
+    if(s) list=[...list].sort((x,y)=>(statVal(y,s)??-1)-(statVal(x,s)??-1));
+    grid.innerHTML = list.length?list.map(heroCard).join(""):`<div class="muted">조건에 맞는 무장이 없습니다.</div>`;
+  };
+  bar.addEventListener("input",draw); draw();
+}
+function heroCard(h){
+  const st=h.stats?["무력","지력","통솔","선공"].map(k=>{
+    const o=h.stats[k]; if(!o) return `<span>${k} <span class="muted">?</span></span>`;
+    return `<span>${k} <b>${o.value ?? "?"}</b> ${o.growth!=null?`<span class="growth">(${o.growth})</span>`:""}</span>`;
+  }).join(""):`<span class="muted">스탯 미확보</span>`;
+  const tacs=(h.tactics||[]).map(t=>{const n=typeof t==="string"?t:t.name; return n?`<span class="t">${esc(n)}</span>`:`<span class="muted">?</span>`;}).join(", ");
+  const roles=(h.roleTags||[]).map(r=>`<span class="pill">${esc(r)}</span>`).join("")+(h.position?`<span class="pos"> ${esc(h.position)}</span>`:"");
+  return `<div class="card ${h.obtained?"":"notobt"}">
+    <h3>${esc(h.name)} <span class="fac ${facClass(h.faction)}">${esc(h.faction||"")}</span>
+      ${armsName(h.arms)?`<span class="badge">${esc(armsName(h.arms))}</span>`:""}
+      ${h.obtained?"":`<span class="badge">미획득</span>`}${h.level?`<span class="badge">Lv${h.level}</span>`:""}</h3>
+    <div class="stats">${st}</div>
+    ${tacs?`<div class="tac">전법: ${tacs}</div>`:""}
+    <div style="margin-top:4px">${roles}</div>
+  </div>`;
+}
+
+/* ---------- TACTICS ---------- */
+function renderTactics(){
+  const v=$("#view-tactics"); v.innerHTML="";
+  const tacs=DATA.tactics?.tactics||[];
+  const tax=DATA.tactics?.taxonomy||{};
+  const grades=[...new Set(tacs.map(t=>t.grade).filter(Boolean))];
+  const types=tax.type||[...new Set(tacs.map(t=>t.type).filter(Boolean))];
+  const attrs=Object.keys(tax.attribute||{}).length?Object.keys(tax.attribute):[...new Set(tacs.map(t=>t.attribute).filter(Boolean))];
+  const bar=el("div","filters");
+  bar.innerHTML=`
+    <label class="f">등급<select id="tg"><option value="">전체</option>${grades.map(g=>`<option>${g}</option>`).join("")}</select></label>
+    <label class="f">유형<select id="tt"><option value="">전체</option>${types.map(t=>`<option>${t}</option>`).join("")}</select></label>
+    <label class="f">특성<select id="ta"><option value="">전체</option>${attrs.map(a=>`<option>${a}</option>`).join("")}</select></label>
+    <label class="f"><input type="checkbox" id="td"> 상세 있는 것만</label>
+    <label class="f">검색<input type="text" id="tq" placeholder="이름/효과..."></label>`;
+  v.appendChild(bar);
+  const grid=el("div","grid"); v.appendChild(grid);
+  const draw=()=>{
+    const g=$("#tg").value,t=$("#tt").value,a=$("#ta").value,d=$("#td").checked,q=$("#tq").value.trim();
+    const list=tacs.filter(x=>(!g||x.grade===g)&&(!t||x.type===t)&&(!a||x.attribute===a)&&(!d||x.detail)&&
+      (!q||x.name.includes(q)||(x.effect||"").includes(q)));
+    grid.innerHTML=list.length?list.map(tacCard).join(""):`<div class="muted">조건에 맞는 전법이 없습니다.</div>`;
+  };
+  bar.addEventListener("input",draw); draw();
+}
+function tacCard(t){
+  const meta=[t.type,t.attribute,t.triggerRate!=null?`발동 ${t.triggerRate}%`:null].filter(Boolean).map(m=>`<span class="pill">${esc(m)}</span>`).join("");
+  const inn=t.innateOf?heroById(t.innateOf):null;
+  return `<div class="card">
+    <h3>${esc(t.name)} ${t.grade?`<span class="badge ${gradeClass(t.grade)}">${esc(t.grade)}</span>`:""}</h3>
+    <div>${meta}</div>
+    ${t.effect?`<div class="tac" style="margin-top:6px">${esc(t.effect)}</div>`:`<div class="muted small" style="margin-top:6px">효과 미확보</div>`}
+    ${inn?`<div class="muted small" style="margin-top:6px">고유: ${esc(inn.name)}</div>`:""}
+    ${t.levelBasis?`<div class="muted small">기준: ${esc(t.levelBasis)}</div>`:""}
+  </div>`;
+}
+
+/* ---------- DECK BUILDER ---------- */
+const deck=[{},{},{}]; // each: {heroId, arms}
+function renderDeck(){
+  const v=$("#view-deck"); v.innerHTML="";
+  const intro=el("div","panel"); intro.style.marginBottom="12px";
+  intro.innerHTML=`<b style="color:var(--gold2)">부대 편성</b> <span class="muted small">— 장수 3명을 골라 병종을 지정하면 편성 보너스·선공 순서·상성을 계산합니다. (데이터가 채워질수록 정확해집니다)</span>`;
+  v.appendChild(intro);
+  const slots=el("div","slots");
+  const heroes=(DATA.heroes?.heroes||[]).slice().sort((a,b)=>(b.obtained?1:0)-(a.obtained?1:0)||a.name.localeCompare(b.name,"ko"));
+  const armsOpts=(DATA.arms?.arms||[]).map(a=>a.name);
+  for(let i=0;i<3;i++){
+    const s=el("div","slot");
+    const opts=`<option value="">— 장수 선택 —</option>`+heroes.map(h=>`<option value="${h.id}" ${deck[i].heroId===h.id?"selected":""}>${h.obtained?"":"◌ "}${esc(h.name)} (${esc(h.faction||"?")})</option>`).join("");
+    s.innerHTML=`<h4>슬롯 ${i+1}</h4>
+      <select data-slot="${i}" class="hpick" style="width:100%">${opts}</select>
+      <div class="hdetail" id="hd${i}" style="margin-top:8px"></div>`;
+    slots.appendChild(s);
+  }
+  v.appendChild(slots);
+  const syn=el("div","panel syn"); syn.id="syn"; syn.style.marginTop="12px"; v.appendChild(syn);
+  v.querySelectorAll(".hpick").forEach(sel=>sel.addEventListener("change",e=>{
+    const i=+e.target.dataset.slot; const h=heroById(e.target.value);
+    deck[i]={heroId:e.target.value||null, arms:h?armsName(h.arms):null};
+    drawSlotDetail(i); computeSyn();
+  }));
+  deck.forEach((_,i)=>drawSlotDetail(i)); computeSyn();
+}
+function drawSlotDetail(i){
+  const box=$("#hd"+i); if(!box) return;
+  const h=heroById(deck[i].heroId);
+  if(!h){ box.innerHTML=`<span class="muted small">비어 있음</span>`; return; }
+  const armsOpts=(DATA.arms?.arms||[]).map(a=>`<option ${deck[i].arms===a.name?"selected":""}>${a.name}</option>`).join("");
+  const st=["무력","지력","통솔","선공"].map(k=>`<span>${k} <b>${statVal(h,k)??"?"}</b></span>`).join("");
+  const tacs=(h.tactics||[]).map(t=>typeof t==="string"?t:t.name).filter(Boolean).map(n=>`<span class="pill">${esc(n)}</span>`).join("");
+  box.innerHTML=`<div class="stats">${st}</div>
+    <div class="small" style="margin:4px 0"><span class="muted">병종</span>
+      <select data-arm="${i}"><option value="">(미지정)</option>${armsOpts}</select>
+      ${h.position?`<span class="pos"> ${esc(h.position)}</span>`:""}</div>
+    ${tacs?`<div class="tac">${tacs}</div>`:`<div class="muted small">전법 미확보</div>`}`;
+  box.querySelector("[data-arm]").addEventListener("change",e=>{deck[i].arms=e.target.value||null;computeSyn();});
+}
+function computeSyn(){
+  const box=$("#syn"); if(!box) return;
+  const filled=deck.map(d=>({d,h:heroById(d.heroId)})).filter(x=>x.h);
+  if(!filled.length){ box.innerHTML=`<span class="muted">장수를 선택하면 시너지가 표시됩니다.</span>`; return; }
+  const fb=DATA.combat?.formationBonuses||{};
+  const lines=[];
+  // faction
+  const fc={}; filled.forEach(x=>{if(x.h.faction)fc[x.h.faction]=(fc[x.h.faction]||0)+1;});
+  let facTxt="없음"; const facMax=Object.entries(fc).sort((a,b)=>b[1]-a[1])[0];
+  if(facMax){ if(facMax[1]>=3&&fb.진영?.same3) facTxt=`${facMax[0]} 3명 → ${fb.진영.same3}`;
+    else if(facMax[1]===2&&fb.진영?.same2) facTxt=`${facMax[0]} 2명 → ${fb.진영.same2}`; }
+  lines.push(["진영 보너스",facTxt]);
+  // arms
+  const ac={}; filled.forEach(x=>{if(x.d.arms)ac[x.d.arms]=(ac[x.d.arms]||0)+1;});
+  const armTxts=[];
+  Object.entries(ac).forEach(([a,c])=>{const b=fb[a]; if(!b)return;
+    if(c>=3&&b.count3)armTxts.push(`${a} 3명 → ${b.count3}`); else if(c===2&&b.count2)armTxts.push(`${a} 2명 → ${b.count2}`);});
+  lines.push(["병종 보너스",armTxts.length?armTxts.join(" · "):"없음 (같은 병종 2명↑ 필요)"]);
+  // 선공 order
+  const order=filled.map(x=>({n:x.h.name,v:statVal(x.h,"선공")})).sort((a,b)=>(b.v??-1)-(a.v??-1));
+  lines.push(["선공 순서",order.map((o,i)=>`${i+1}. ${esc(o.n)} <span class="muted">(${o.v??"?"})</span>`).join(" → ")]);
+  // roles
+  const roles=[...new Set(filled.flatMap(x=>x.h.roleTags||[]))];
+  const positions=filled.map(x=>x.h.position).filter(Boolean);
+  lines.push(["역할 구성",roles.length?roles.map(r=>`<span class="pill">${esc(r)}</span>`).join(""):"<span class='muted'>미확보</span>"]);
+  // warnings
+  const warns=[];
+  if(!roles.includes("치유")&&!roles.includes("보조")) warns.push("힐/서포터가 없습니다");
+  if(positions.length&&positions.every(p=>p==="후열")) warns.push("전원 후열 — 전열 탱커 고려");
+  if(filled.length<3) warns.push("슬롯이 비어 있습니다");
+  if(warns.length) lines.push(["점검",`<span class="warn">${warns.map(esc).join(" · ")}</span>`]);
+  // enemy arms helper
+  const armsList=(DATA.arms?.arms||[]).map(a=>a.name);
+  const counters=DATA.arms?.counters||{};
+  box.innerHTML = `<b style="color:var(--gold2)">부대 시너지</b>`+
+    lines.map(l=>`<div class="line"><span class="k">${l[0]}</span><span>${l[1]}</span></div>`).join("")+
+    `<div class="line"><span class="k">상성 체크</span><span>적 병종
+      <select id="enemyArm"><option value="">선택</option>${armsList.map(a=>`<option>${a}</option>`).join("")}</select>
+      <span id="counterOut" class="small muted"></span></span></div>`;
+  const sel=box.querySelector("#enemyArm");
+  if(sel) sel.addEventListener("change",e=>{
+    const enemy=e.target.value; const out=box.querySelector("#counterOut"); if(!enemy){out.textContent="";return;}
+    const map={}; (DATA.arms?.arms||[]).forEach(a=>map[a.name]=a.id);
+    const res=filled.map(x=>{
+      const myName=x.d.arms; if(!myName) return `${x.h.name}: 병종?`;
+      const myId=map[myName], enId=map[enemy], c=counters[myId];
+      let r="중립"; if(c){ if(c.beats===enId)r="✅ 우위"; else if(c.losesTo===enId)r="❌ 열세"; }
+      return `${esc(x.h.name)}(${esc(myName)}) ${r}`;
+    });
+    out.innerHTML=" "+res.join(" · ");
+  });
+}
+
+/* ---------- REFERENCE ---------- */
+function renderRef(){
+  const v=$("#view-ref"); v.innerHTML="";
+  const c=DATA.combat||{}, a=DATA.arms||{};
+  // arms cycle
+  const p1=el("div","panel"); p1.style.marginBottom="12px";
+  p1.innerHTML=`<b style="color:var(--gold2)">병종 상성</b>
+    <div class="cycle">${esc(a.cycle? a.cycle.map(id=>armsName(id)).join(" ▶ ")+" ▶ "+armsName(a.cycle[0]) : (c.arms?.counterCycle||"?"))}</div>
+    <div class="muted small">A ▶ B = A가 B를 제압 · 2칸 건너(정반대)는 중립</div>`;
+  v.appendChild(p1);
+  // formation bonuses
+  if(c.formationBonuses){
+    const fb=c.formationBonuses; const p=el("div","panel"); p.style.marginBottom="12px";
+    let rows="";
+    for(const [k,val] of Object.entries(fb)){ if(k.startsWith("_"))continue;
+      rows+=`<tr><th>${esc(k)}</th><td>${esc(val.same2||val.count2||"—")}</td><td>${esc(val.same3||val.count3||"—")}</td></tr>`; }
+    p.innerHTML=`<b style="color:var(--gold2)">편성 보너스</b><table style="margin-top:8px"><tr><th>구성</th><th>2명</th><th>3명</th></tr>${rows}</table>`;
+    v.appendChild(p);
+  }
+  // damage modifiers
+  if(c.damageModifiers){ const p=el("div","panel"); p.style.marginBottom="12px";
+    const dm=c.damageModifiers; const s=dm.supply||{};
+    p.innerHTML=`<b style="color:var(--gold2)">피해 보정</b>
+      <div class="kv small">공급: 80 미만 → ${esc(s.below80)}, 40 미만 → ${esc(s.below40)}</div>
+      <div class="kv small">병력 50% 미만 → ${esc(dm.troopsBelow50pct)}</div>`;
+    v.appendChild(p); }
+  // debuffs / buffs
+  const mk=(title,obj)=>{ if(!obj)return; const p=el("div","panel");p.style.marginBottom="12px";
+    let rows=""; for(const [k,val] of Object.entries(obj)){ if(k.startsWith("_"))continue; rows+=`<tr><th style="white-space:nowrap">${esc(k)}</th><td>${esc(val)}</td></tr>`; }
+    p.innerHTML=`<b style="color:var(--gold2)">${title}</b><table style="margin-top:8px">${rows}</table>`; v.appendChild(p); };
+  mk("이상 상태 (디버프)",c.debuffs);
+  mk("버프",c.buffs);
+  // glossary
+  if(DATA.glossary){ const p=el("div","panel");
+    const cats=Object.keys(DATA.glossary).filter(k=>!k.startsWith("_"));
+    p.innerHTML=`<b style="color:var(--gold2)">용어 사전</b>
+      <div class="filters" style="margin:8px 0"><input type="text" id="gq" placeholder="용어 검색..." style="min-width:220px"></div>
+      <div id="gout"></div>`;
+    v.appendChild(p);
+    const draw=()=>{const q=($("#gq").value||"").trim();let out="";
+      cats.forEach(cat=>{const entries=Object.entries(DATA.glossary[cat]).filter(([k])=>!k.startsWith("_"))
+        .filter(([k,val])=>!q||k.includes(q)||String(val).includes(q));
+        if(entries.length) out+=`<div style="margin-top:6px"><span class="pill">${esc(cat)}</span></div>`+
+          `<table>${entries.map(([k,val])=>`<tr><th style="white-space:nowrap">${esc(k)}</th><td>${esc(val)}</td></tr>`).join("")}</table>`;});
+      $("#gout").innerHTML=out||`<span class="muted">결과 없음</span>`;};
+    p.querySelector("#gq").addEventListener("input",draw); draw();
+  }
+}
+
+/* ---------- TABS ---------- */
+const TABS=[["deck","덱빌더"],["heroes","무장"],["tactics","전법"],["ref","참조"]];
+function initTabs(){
+  const nav=$("#tabs");
+  TABS.forEach(([id,label],i)=>{const b=el("button","tab"+(i===0?" active":""),label);b.onclick=()=>show(id,b);nav.appendChild(b);});
+}
+function show(id,btn){
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  $("#view-"+id).classList.add("active"); if(btn)btn.classList.add("active");
+  ({deck:renderDeck,heroes:renderHeroes,tactics:renderTactics,ref:renderRef}[id])();
+}
+(async function(){
+  initTabs();
+  await loadData();
+  $("#foot").innerHTML = `데이터 출처: 게임 도감·상세, 공식 용어 가이드·전투 교과서 · 수치는 시즌/패치 변경 가능 · ${DATA.combat?._source?"":""}`;
+  show("deck",document.querySelector(".tab"));
+})();
+</script>
+</body>
+</html>
