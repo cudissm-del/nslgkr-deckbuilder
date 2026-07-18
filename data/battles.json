@@ -1,0 +1,39 @@
+{
+  "_note": "전투 결과 관측 로그. 인게임 스크린샷(Screenshot_Battle.png) 직접 판독. 전법 계수·병종 상성 배수 역산용. 각 전법의 숫자는 '누적 피해(칼)' 또는 '누적 회복(물방울)', ×N=발동 횟수. 결과창 맨 위 전법=고유.",
+  "_extractMethod": "게임 전투 결과 화면에서 인게임 스크린샷/공유 → LocalPersistentData/Screenshot_Battle.png 저장 → Claude 직접 판독",
+  "battles": [
+    {
+      "id": "b001",
+      "result": "패배",
+      "myFormation": "방원진",
+      "enemyFormation": "일자진",
+      "enemy": "Lv20 역도(NPC)",
+      "supply": { "mine": "충분", "enemy": "충분" },
+      "sides": {
+        "mine": {
+          "troops": { "remain": 0, "total": 30000, "loss": 12000 },
+          "heroes": [
+            { "name": "견희", "faction": "위", "troop": "0/10000", "state": "궤멸",
+              "skills": [ {"name":"바람과 눈꽃","casts":1,"type":"heal","value":6595,"innate":true}, {"name":"정의의 희생","casts":1,"type":"dmg","value":0}, {"name":"허점 공략","casts":1,"type":"dmg","value":0} ] },
+            { "name": "소교", "faction": "오", "troop": "0/10000", "state": "궤멸",
+              "skills": [ {"name":"천향","casts":2,"type":"heal","value":1185,"innate":true}, {"name":"강철의 의지","casts":2,"type":"heal","value":1997}, {"name":"팔방전","casts":3,"type":"dmg","value":704} ] },
+            { "name": "손상향", "faction": "오", "troop": "0/10000", "state": "궤멸",
+              "skills": [ {"name":"궁희","casts":9,"type":"dmg","value":22097,"innate":true}, {"name":"신속전개","casts":4,"type":"dmg","value":8558}, {"name":"예리한 통찰","casts":1,"type":"dmg","value":0} ] }
+          ]
+        },
+        "enemy": {
+          "troops": { "remain": 30788, "total": 60000, "loss": 11577 },
+          "heroes": [
+            { "name": "조조", "faction": "위", "troop": "13753/20000",
+              "skills": [ {"name":"난세의 간웅","casts":1,"type":"heal","value":4668,"innate":true}, {"name":"백전불태","casts":1,"type":"dmg","value":0}, {"name":"전략 계획","casts":4,"type":"dmg","value":0} ] },
+            { "name": "장각", "faction": "군", "troop": "9221/20000",
+              "skills": [ {"name":"황천의 시대","casts":4,"type":"dmg","value":16634,"innate":true}, {"name":"충신의 기재","casts":1,"type":"dmg","value":0}, {"name":"광풍의 분노","casts":1,"type":"dmg","value":7240} ] },
+            { "name": "장보", "faction": "군", "troop": "7814/20000",
+              "skills": [ {"name":"도술의 귀재","casts":6,"type":"dmg","value":7570,"innate":true}, {"name":"천하평론","casts":3,"type":"dmg","value":4382}, {"name":"청풍 질주","casts":4,"type":"heal","value":3930} ] }
+          ]
+        }
+      },
+      "notes": "아군 30,000 vs 역도 60,000(장수당 2만) — 병력 열세로 패배. 궁희 9회 22,097(평균 ~2,455/회)."
+    }
+  ]
+}
