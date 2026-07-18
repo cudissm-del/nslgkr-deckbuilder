@@ -10,15 +10,22 @@
       "선공": "공격 순서(이니셔티브). 속도가 아니라 '선공'으로 표기"
     }
   },
+  "tacticModel": {
+    "innateSlots": 1,
+    "equipSlots": 2,
+    "maxTotal": 3,
+    "default": "모든 장수는 기본적으로 고유 전법 1개만 가진 것으로 간주. 추가 2슬롯(장착 전법)은 미장착이 기본이며 교체 가능(10·20레벨에 해제).",
+    "note": "tactics 배열에 2개 이상 있는 장수는 현재 게임에서 관측된 '장착' 상태이며, 그 중 innateTactic이 고정 1개. 나머지는 교체 가능. 전법 데이터가 없는 장수도 규칙상 고유 1개를 보유(명칭 미확보)."
+  },
   "factions": ["위", "촉", "오", "군"],
   "heroes": [
     { "id": "gyeonhui", "name": "견희", "faction": "위", "obtained": true, "team": 1, "arms": "archer", "level": 50,
       "stats": { "무력": {"value":32,"growth":0.23}, "지력": {"value":216,"growth":2.16}, "통솔": {"value":249,"growth":1.62}, "선공": {"value":126,"growth":1.55} },
-      "tactics": ["바람과 눈꽃","전쟁 종식","강철의 의지"], "roleTags": ["보조","치유"], "position": "균형", "innateTactic": "바람과 눈꽃" },
+      "tactics": ["바람과 눈꽃"], "observedEquipped": ["전쟁 종식","강철의 의지"], "roleTags": ["보조","치유"], "position": "균형", "innateTactic": "바람과 눈꽃" },
     { "id": "sogyo", "name": "소교", "faction": "오", "obtained": true, "team": 1, "arms": null },
     { "id": "sun_shangxiang", "name": "손상향", "faction": "오", "obtained": true, "team": 1, "arms": "archer", "position": "후열", "level": 50,
       "stats": { "무력": {"value":278,"growth":2.38}, "지력": {"value":124,"growth":0.98}, "통솔": {"value":187,"growth":1.66}, "선공": {"value":178,"growth":2.41} },
-      "tactics": ["궁희","신속전개","예리한 통찰"], "roleTags": ["병기"], "innateTactic": "궁희" },
+      "tactics": ["궁희"], "observedEquipped": ["신속전개","예리한 통찰"], "roleTags": ["병기"], "innateTactic": "궁희" },
 
     { "id": "yubi", "name": "유비", "faction": "촉", "obtained": true, "team": 2, "arms": null },
     { "id": "jangbi", "name": "장비", "faction": "촉", "obtained": true, "team": 2, "arms": null },
@@ -27,18 +34,18 @@
     { "id": "seoseong", "name": "서성", "faction": "오", "obtained": true, "team": 3, "arms": null },
     { "id": "daegyo", "name": "대교", "faction": "오", "obtained": true, "team": 3, "arms": null, "level": 50,
       "stats": { "무력": {"value":40,"growth":0.35}, "지력": {"value":254,"growth":2.15}, "통솔": {"value":195,"growth":1.69}, "선공": {"value":113,"growth":1.72} },
-      "tactics": ["국색","청낭 치료","예측의 신"], "roleTags": ["보조","치유"], "position": "균형", "innateTactic": "국색" },
+      "tactics": ["국색"], "observedEquipped": ["청낭 치료","예측의 신"], "roleTags": ["보조","치유"], "position": "균형", "innateTactic": "국색" },
     { "id": "sonchaek", "name": "손책", "faction": "오", "obtained": true, "team": 3, "arms": null },
 
     { "id": "yeopo", "name": "여포", "faction": "군", "obtained": true, "team": 4, "arms": "cavalry" },
     { "id": "dongtak", "name": "동탁", "faction": "군", "obtained": true, "team": 4, "arms": null },
     { "id": "choseon", "name": "초선", "faction": "군", "obtained": true, "team": 4, "arms": "cavalry", "level": 50,
       "stats": { "무력": {"value":38,"growth":0.41}, "지력": {"value":217,"growth":2.22}, "통솔": {"value":240,"growth":1.75}, "선공": {"value":146,"growth":2.03} },
-      "tactics": ["폐월","결사의 다짐","청야 전술"], "roleTags": ["방어"], "position": "전열", "innateTactic": "폐월", "_note": "통솔 240 탱커" },
+      "tactics": ["폐월"], "observedEquipped": ["결사의 다짐","청야 전술"], "roleTags": ["방어"], "position": "전열", "innateTactic": "폐월", "_note": "통솔 240 탱커" },
 
     { "id": "gwakga", "name": "곽가", "faction": "위", "obtained": true, "team": 5, "arms": null, "level": 50,
       "stats": { "무력": {"value":45,"growth":0.21}, "지력": {"value":307,"growth":2.74}, "통솔": {"value":169,"growth":1.70}, "선공": {"value":149,"growth":1.81} },
-      "tactics": ["주도면밀","화공전술","출기불의"], "roleTags": ["책략"], "position": "후열", "innateTactic": "주도면밀", "_note": "지력 307 최상급 계략 딜러" },
+      "tactics": ["주도면밀"], "observedEquipped": ["화공전술","출기불의"], "roleTags": ["책략"], "position": "후열", "innateTactic": "주도면밀", "_note": "지력 307 최상급 계략 딜러" },
     { "id": "chaemunhui", "name": "채문희", "faction": "군", "obtained": true, "team": 5, "arms": null, "level": 50,
       "stats": { "무력": {"value":29,"growth":0.24}, "지력": {"value":260,"growth":2.29}, "통솔": {"value":166,"growth":1.59}, "선공": {"value":174,"growth":1.92} },
       "tactics": ["비분시"], "roleTags": ["치유"], "position": "균형", "innateTactic": "비분시", "_note": "고유전법만 보유, 전법 슬롯 2·병법 슬롯 미개방" },
@@ -50,7 +57,7 @@
     { "id": "join", "name": "조인", "faction": "위", "obtained": true, "arms": null },
     { "id": "gwanu", "name": "관우", "faction": "촉", "obtained": true, "arms": "cavalry", "level": 50,
       "stats": { "무력": {"value":304,"growth":2.75}, "지력": {"value":147,"growth":1.35}, "통솔": {"value":200,"growth":2.13}, "선공": {"value":188,"growth":2.43} },
-      "tactics": ["화하 진압","찬란한 위명","압도적 승리"], "roleTags": ["병기"], "position": "후열", "innateTactic": "화하 진압", "_note": "무력 304 물리 딜러" },
+      "tactics": ["화하 진압"], "observedEquipped": ["찬란한 위명","압도적 승리"], "roleTags": ["병기"], "position": "후열", "innateTactic": "화하 진압", "_note": "무력 304 물리 딜러" },
     { "id": "seoseo", "name": "서서", "faction": "촉", "obtained": true, "arms": null, "level": 5,
       "stats": { "무력": {"value":95,"growth":1.95}, "지력": {"value":109,"growth":2.55}, "통솔": {"value":93,"growth":1.59}, "선공": {"value":87,"growth":2.36} },
       "tactics": ["겸손한 자세"], "roleTags": ["문무"], "position": "후열", "innateTactic": "겸손한 자세", "_note": "미육성(Lv5). 지력 성장 2.55" },
