@@ -22,7 +22,9 @@
     { "id": "gyeonhui", "name": "견희", "faction": "위", "obtained": true, "team": 1, "arms": "archer", "level": 50,
       "stats": { "무력": {"value":32,"growth":0.23}, "지력": {"value":216,"growth":2.16}, "통솔": {"value":249,"growth":1.62}, "선공": {"value":126,"growth":1.55} },
       "tactics": ["바람과 눈꽃"], "observedEquipped": ["전쟁 종식","강철의 의지"], "roleTags": ["보조","치유"], "position": "균형", "innateTactic": "바람과 눈꽃" },
-    { "id": "sogyo", "name": "소교", "faction": "오", "obtained": true, "team": 1, "arms": null },
+    { "id": "sogyo", "name": "소교", "faction": "오", "obtained": true, "team": 1, "arms": null,
+      "tactics": ["천향"], "innateTactic": "천향", "observedEquipped": ["강철의 의지","팔방전"],
+      "_source": "전투 결과창(b001)·전황 로그(b002) 판독 — 결과창 최상단=고유" },
     { "id": "sun_shangxiang", "name": "손상향", "faction": "오", "obtained": true, "team": 1, "arms": "archer", "position": "후열", "level": 50,
       "stats": { "무력": {"value":278,"growth":2.38}, "지력": {"value":124,"growth":0.98}, "통솔": {"value":187,"growth":1.66}, "선공": {"value":178,"growth":2.41} },
       "tactics": ["궁희"], "observedEquipped": ["신속전개","예리한 통찰"], "roleTags": ["병기"], "innateTactic": "궁희" },
@@ -98,7 +100,8 @@
       "stats": { "무력": {"value":94,"growth":1.80}, "지력": {"value":101,"growth":2.10}, "통솔": {"value":100,"growth":1.73}, "선공": {"value":66,"growth":1.75} },
       "tactics": ["둔전령"], "roleTags": ["치유"], "position": "균형", "innateTactic": "둔전령", "_note": "미육성(Lv5). 최초 로스터 캡처 시 누락됐던 보유 장수" },
 
-    { "id": "jojo", "name": "조조", "faction": "위", "obtained": false, "arms": null },
+    { "id": "jojo", "name": "조조", "faction": "위", "obtained": false, "arms": null,
+      "tactics": ["난세의 간웅"], "innateTactic": "난세의 간웅", "_source": "전투 결과창(b001) 판독" },
     { "id": "heojeo", "name": "허저", "faction": "위", "obtained": false, "arms": null },
     { "id": "jeonwi", "name": "전위", "faction": "위", "obtained": false, "arms": null },
     { "id": "sunuk", "name": "순욱", "faction": "위", "obtained": false, "arms": null },
@@ -106,13 +109,18 @@
     { "id": "jegalryang", "name": "제갈량", "faction": "촉", "obtained": false, "arms": null },
     { "id": "joun", "name": "조운", "faction": "촉", "obtained": false, "arms": null },
     { "id": "songwon", "name": "손권", "faction": "오", "obtained": false, "arms": null },
-    { "id": "juyu", "name": "주유", "faction": "오", "obtained": false, "arms": null },
+    { "id": "juyu", "name": "주유", "faction": "오", "obtained": false, "arms": null,
+      "tactics": ["기지의 승리"], "innateTactic": "기지의 승리", "observedEquipped": ["화공전술","재해 이용"],
+      "roleTags": ["책략"], "position": "후열",
+      "stats": { "무력": {"value":120,"growth":0.95}, "지력": {"value":288,"growth":2.75}, "통솔": {"value":194,"growth":2.01}, "선공": {"value":140,"growth":1.73} },
+      "level": 50, "_source": "무장 상세 캡처 + 전황 로그(b002)" },
     { "id": "yeomong", "name": "여몽", "faction": "오", "obtained": false, "arms": null },
     { "id": "hwanggae", "name": "황개", "faction": "오", "obtained": false, "arms": null },
     { "id": "wonso", "name": "원소", "faction": "군", "obtained": false, "arms": null },
     { "id": "iyu", "name": "이유", "faction": "군", "obtained": false, "arms": null },
     { "id": "hwata", "name": "화타", "faction": "군", "obtained": false, "arms": null },
     { "id": "bangdeok", "name": "방덕", "faction": "군", "obtained": false, "arms": null },
-    { "id": "jangbo", "name": "장보", "faction": "군", "obtained": false, "arms": null }
+    { "id": "jangbo", "name": "장보", "faction": "군", "obtained": false, "arms": null,
+      "tactics": ["도술의 귀재"], "innateTactic": "도술의 귀재", "_source": "전투 결과창(b001) 판독" }
   ]
 }
