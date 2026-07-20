@@ -1,5 +1,5 @@
 == Deckbuilder Sync Diagnostic == 
-Date: 2026-07-21  1:07:29.05 
+Date: 2026-07-21  1:07:44.32 
  
 [1] git version 
 git version 2.41.0.windows.3
@@ -24,24 +24,18 @@ On branch main
 Your branch is up to date with 'origin/main'.
 
 Changes not staged for commit:
-  (use "git add/rm <file>..." to update what will be committed)
+  (use "git add <file>..." to update what will be committed)
   (use "git restore <file>..." to discard changes in working directory)
-	deleted:    docs/sync.bat
-
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-	sync.bat
-	sync_check.bat
-	sync_check_log.txt
+	modified:   sync_check_log.txt
 
 no changes added to commit (use "git add" and/or "git commit -a")
  
 [7] last 5 local commits 
+d84d666 data update
 4f39756 data update
 b53fff3 data update
 f64c55f data update
 08a43c1 data update
-881e823 data update
  
 [8] fetch from remote (auth test) 
   exit=0   (non-zero = auth or network problem) 
